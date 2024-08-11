@@ -7,6 +7,8 @@
 </form>
 <?php
 
+/* namespace App;
+ */
 require_once __DIR__ . '/vendor/autoload.php';
 
 use Symfony\Component\Finder\Finder;
@@ -36,12 +38,13 @@ openssl_pkey_export($res, $privKey);
 $pubKey = openssl_pkey_get_details($res);
 $pubKey = $pubKey["key"];
 
-
 // Encrypt the data to $encrypted using the public key
 openssl_public_encrypt($text, $encrypted, $pubKey);
 
 // Decrypt the data using the private key and store the results in $decrypted
 openssl_private_decrypt($encrypted, $decrypted, $privKey);
+
+
 
 ?>
 
