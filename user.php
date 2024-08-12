@@ -12,6 +12,7 @@ $request = Request::createFromGlobals();
 
 $text = $request->request->get('text');
 $name = $request->request->get('name');
+$user = $request->request->get('user');
 
 $config = array(
     "digest_alg" => "sha512",
@@ -52,7 +53,7 @@ if ($text &&  $name) {
 }
 
 
-
+$data = $data[$user];
 ?>
 
 <!DOCTYPE html>
@@ -176,24 +177,19 @@ if ($text &&  $name) {
     <div class="container mt-5">
         <!-- Hero Section -->
         <div class="hero">
-            <h1>Submit Your Message</h1>
+            <h1>Submit Your Request</h1>
             <p>Envie sua mensagem de forma segura e protegida!</p>
         </div>
 
         <!-- Form Section -->
         <div class="card mb-4">
             <div class="card-header">
-                <h3>Submit Your Message</h3>
+                <h3>Submit Your certificate</h3>
             </div>
             <div class="card-body">
-                <form action="/controller.php" method="post">
+                <form action="/certificate.php" method="post">
                     <div class="mb-3">
-                        <label for="name" class="form-label">Name<span class="text-danger">*</span></label>
-                        <input required type="text" name="name" class="form-control" id="name" placeholder="Enter your name">
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="text" class="form-label">Message<span class="text-danger">*</span></label>
+                        <label for="text" class="form-label">Cetificate<span class="text-danger">*</span></label>
                         <textarea required name="text" class="form-control" id="text" rows="4" placeholder="Write your message here"></textarea>
                     </div>
 
@@ -209,28 +205,35 @@ if ($text &&  $name) {
         ?>
             <div class="card">
                 <div class="card-header">
-                    <h3>Messages</h3>
+                    <h3><?php echo htmlspecialchars($user['name'] ?? 'aa'); ?> Messages</h3>
                 </div>
                 <div class="card-body">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>#</th>
+
                                 <th>Message</th>
-                                <th>Comunication</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($data as $key => $user) { ?>
-                                <tr>
-                                    <td><?php echo htmlspecialchars($user['name'] ?? 'aa'); ?></td>
 
-                                    <td><?php echo htmlspecialchars(count($user['messages'])); ?></td>
+                            <?php foreach ($data['messages'] as $key => $s) { ?>
+                                <tr>
                                     <td>
-                                        <a href="/user.php?user=<?php echo htmlspecialchars($user['name'] ?? 'aa'); ?>" class="btn-btn-success">
-                                            Comunication
-                                        </a>
+                                        <span><?php echo $key; ?></span>
+
+
+
                                     </td>
+                                    <td>
+
+                                        <span><?php echo htmlspecialchars(substr($s, 1, 100)); ?></span>
+
+
+                                    </td>
+
+
 
                                 </tr>
                             <?php } ?>
