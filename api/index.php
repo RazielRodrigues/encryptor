@@ -155,6 +155,7 @@
             <li><a href="#">Sobre</a></li>
             <li><a href="#">Funcionalidades</a></li>
             <li><a href="#">Contato</a></li>
+            <li><a href="/db.json">Database</a></li>
         </ul>
     </div>
 
