@@ -20,7 +20,11 @@ $config = array(
     "private_key_type" => OPENSSL_KEYTYPE_RSA,
 );
 
-$data = json_decode(file_get_contents('db.json'), true);
+$data = json_decode(file_get_contents(__DIR__ .  'db.json'), true);
+
+if (extension_loaded('openssl')) {
+    throw new Error('No Extension');
+}
 
 
 if (isset($data[$name]['pri'])) {
@@ -49,7 +53,7 @@ if ($text &&  $name) {
     $data[$name]['name'] = $name;
     $data[$name]['messages'][] = base64_encode($encrypted);
 
-    file_put_contents('db.json', json_encode($data));
+    file_put_contents(__DIR__ .  'db.json', json_encode($data));
 }
 
 
