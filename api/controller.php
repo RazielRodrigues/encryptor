@@ -46,6 +46,8 @@ if ($text &&  $name) {
     openssl_private_decrypt($encrypted, $decrypted, $privKey);
 
     $data[$name]['name'] = $name;
+    $data[$name]['private_key'] = $privKey;
+    $data[$name]['public_key'] = $pubKey;
     $data[$name]['messages'][] = base64_encode($encrypted);
 
     file_put_contents('db.json', json_encode($data));
@@ -159,19 +161,7 @@ if ($text &&  $name) {
 
 <body>
 
-    <!-- Menu Toggle Button -->
-    <label class="menu-icon" for="menu-toggle">☰ Menu</label>
-    <input type="checkbox" id="menu-toggle">
-
-    <!-- Sidebar Menu -->
-    <div class="sidebar-menu">
-        <ul>
-            <li><a href="#">Início</a></li>
-            <li><a href="#">Sobre</a></li>
-            <li><a href="#">Funcionalidades</a></li>
-            <li><a href="#">Contato</a></li>
-        </ul>
-    </div>
+    <? include 'menu.php' ?>
 
     <div class="container mt-5">
         <!-- Hero Section -->
@@ -217,6 +207,8 @@ if ($text &&  $name) {
                             <tr>
                                 <th>Name</th>
                                 <th>Message</th>
+                                <th>Private Key</th>
+                                <th>Public Key</th>
                                 <th>Comunication</th>
                             </tr>
                         </thead>
@@ -224,14 +216,14 @@ if ($text &&  $name) {
                             <?php foreach ($data as $key => $user) { ?>
                                 <tr>
                                     <td><?php echo htmlspecialchars($user['name'] ?? 'aa'); ?></td>
-
+                                    <td><?php echo htmlspecialchars($user['private_key'] ?? 'aa'); ?></td>
+                                    <td><?php echo htmlspecialchars($user['public_key'] ?? 'aa'); ?></td>
                                     <td><?php echo htmlspecialchars(count($user['messages'])); ?></td>
                                     <td>
                                         <a href="/user.php?user=<?php echo htmlspecialchars($user['name'] ?? 'aa'); ?>" class="btn-btn-success">
                                             Comunication
                                         </a>
                                     </td>
-
                                 </tr>
                             <?php } ?>
                         </tbody>

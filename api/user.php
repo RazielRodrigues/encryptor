@@ -20,11 +20,7 @@ $config = array(
     "private_key_type" => OPENSSL_KEYTYPE_RSA,
 );
 
-$data = json_decode(file_get_contents(__DIR__ .  'db.json'), true);
-
-if (extension_loaded('openssl')) {
-    throw new Error('No Extension');
-}
+$data = json_decode(file_get_contents('db.json'), true);
 
 
 if (isset($data[$name]['pri'])) {
@@ -51,13 +47,16 @@ if ($text &&  $name) {
     openssl_private_decrypt($encrypted, $decrypted, $privKey);
 
     $data[$name]['name'] = $name;
+    $data[$name]['private_key'] = $privKey;
+    $data[$name]['public_key'] = $pubKey;
     $data[$name]['messages'][] = base64_encode($encrypted);
 
-    file_put_contents(__DIR__ .  'db.json', json_encode($data));
+    file_put_contents('db.json', json_encode($data));
 }
 
 
 $data = $data[$user];
+
 ?>
 
 <!DOCTYPE html>
@@ -171,13 +170,12 @@ $data = $data[$user];
     <!-- Sidebar Menu -->
     <div class="sidebar-menu">
         <ul>
-            <li><a href="#">Início</a></li>
-            <li><a href="#">Sobre</a></li>
-            <li><a href="#">Funcionalidades</a></li>
-            <li><a href="#">Contato</a></li>
+            <li><a href="/">Início</a></li>
+            <li><a href="/user.php">users</a></li>
+            <li><a href="/controller.php">controller</a></li>
+            <li><a href="/db.json">Database</a></li>
         </ul>
     </div>
-
     <div class="container mt-5">
         <!-- Hero Section -->
         <div class="hero">
