@@ -1,3 +1,29 @@
+<?php
+if (isset($_POST['message'])) {
+    $message = $_POST['message'];
+
+    $res = openssl_pkey_new(array(
+        "digest_alg" => "sha512",
+        "private_key_bits" => 512,
+        "private_key_type" => OPENSSL_KEYTYPE_RSA,
+    ));
+
+    openssl_pkey_export($res, $privKey);
+    $pubKey = openssl_pkey_get_details($res);
+    $pubKey = $pubKey["key"];
+
+    openssl_public_encrypt($message, $encrypted, $pubKey);
+}
+
+if (isset($_POST['message']) && isset($_POST['key'])) {
+    $key = base64_decode($_POST['key']);
+    $message = base64_decode($_POST['message']);
+
+    openssl_private_decrypt($message, $decrypted, $key);
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -8,223 +34,132 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #f0f8ff;
-            color: #333;
-            font-family: 'Arial', sans-serif;
+            background-color: #000000;
+            /* Fundo preto */
+            color: #00ff00;
+            /* Verde estilo Matrix */
+            font-family: 'Consolas', monospace;
+            /* Fonte estilo digital */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            background-size: cover;
         }
 
         .hero {
-            background-color: #ffefd5;
-            padding: 50px 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            /* Fundo preto com transparência */
+            padding: 40px;
             text-align: center;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
             margin-bottom: 20px;
-        }
-
-        .hero img {
-            max-width: 150px;
-            margin-bottom: 20px;
+            box-shadow: 0 0 2px #00ff00;
         }
 
         .hero h1 {
-            font-family: 'Pacifico', cursive;
             font-size: 3em;
-            color: #ff6347;
+            color: #00ff00;
+            text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
         }
 
-        .features {
-            display: flex;
-            justify-content: space-around;
-            text-align: center;
+        .hero p,
+        button {
+            font-size: 1.2em;
+            color: #00ff00;
+            background-color: transparent;
         }
 
-        .feature-box {
-            background-color: #ffe4e1;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 300px;
-            margin: 10px;
-        }
-
-        .feature-box img {
-            max-width: 80px;
-            margin-bottom: 15px;
-        }
-
-        .feature-box h3 {
-            margin-bottom: 10px;
-        }
-
-        .footer {
-            background-color: #ffdead;
-            padding: 15px;
-            text-align: center;
-            margin-top: auto;
-            border-radius: 10px;
-        }
-
-        /* Sidebar Menu */
-        #menu-toggle {
-            display: none;
-        }
-
-        .menu-icon {
-            cursor: pointer;
-            font-size: 24px;
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-        }
-
-        .sidebar-menu {
-            background-color: #333;
-            color: white;
-            padding: 15px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 250px;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease-in-out;
-            z-index: 999;
-        }
-
-        #menu-toggle:checked+.sidebar-menu {
-            transform: translateX(0);
-        }
-
-        .sidebar-menu ul {
-            list-style-type: none;
-            padding: 0;
-            margin-top: 50px;
-        }
-
-        .sidebar-menu ul li {
-            margin: 15px 0;
-        }
-
-        .sidebar-menu ul li a {
-            color: white;
-            text-decoration: none;
-        }
-
-        /* Custom Section Styles */
         .content-section {
+            background-color: rgba(0, 0, 0, 0.8);
+            /* Fundo preto com transparência */
             padding: 20px;
-            background-color: #fafad2;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
-        .code-section {
-            background-color: #f5f5f5;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
-        code {
-            background-color: #eee;
-            padding: 10px;
             border-radius: 5px;
-            display: block;
+            margin-bottom: 20px;
+            box-shadow: 0 0 2px #00ff00;
         }
     </style>
 </head>
 
 <body>
-    <!-- Menu Toggle Button -->
-    <label class="menu-icon" for="menu-toggle">☰ Menu</label>
-    <input type="checkbox" id="menu-toggle">
-
-    <!-- Menu Toggle Button -->
-    <label class="menu-icon" for="menu-toggle">☰ Menu</label>
-    <input type="checkbox" id="menu-toggle">
-
-    <!-- Sidebar Menu -->
-    <div class="sidebar-menu">
-        <ul>
-            <li><a href="/">Início</a></li>
-            <li><a href="/user.php">users</a></li>
-            <li><a href="/controller.php">controller</a></li>
-            <li><a href="/db.json">Database</a></li>
-        </ul>
-    </div>
     <div class="container">
-        <!-- Hero Section -->
         <div class="hero">
-            <img src="https://via.placeholder.com/150?text=🔐" alt="Cadeado Emoji" class="img-fluid">
-            <h1>SafeMessage 🔐</h1>
-            <p>Comunique-se com segurança usando mensagens criptografadas e protegidas.</p>
-            <a href="/controller.php" class="btn btn-primary btn-lg">Comece Agora</a>
+            <h1>Encryptor</h1>
         </div>
 
-        <!-- Content Section -->
         <div class="content-section">
-            <h2>Segurança na Comunicação</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget quam id eros facilisis dignissim. Fusce fermentum sapien non arcu ullamcorper, ac tincidunt nunc cursus. Integer gravida elit eu suscipit laoreet.</p>
+            <ol>
+                <li>
+                    Gerar suas chaves
+                </li>
+                <li>
+                    Salvar suas chaves
+                </li>
+                <li>
+                    Escrever sua mensagem
+                </li>
+                <li>
+                    Encryptar sua mensagem
+                </li>
+                <li>
+                    Compartilhar sua mensagem
+                </li>
+                <li>
+                    Encryptar
+                </li>
+                <li>
+                    Decryptar
+                </li>
+            </ol>
         </div>
 
-        <!-- Features Section -->
-        <div class="features row">
-            <div class="feature-box col-md-4">
-                <img src="https://via.placeholder.com/80?text=🔒" alt="Emoji de Cadeado Aberto">
-                <h3>Criptografia Forte 🔒</h3>
-                <p>Proteja suas mensagens com a mais recente tecnologia de criptografia.</p>
+        <!-- Formulário para Criptografar -->
+        <form method="post">
+            <textarea name="message" placeholder="Digite sua mensagem para criptografar"></textarea>
+            <div>
+                <button type="submit">Encrypt</button>
             </div>
-            <div class="feature-box col-md-4">
-                <img src="https://via.placeholder.com/80?text=🛡️" alt="Emoji de Chave">
-                <h3>Segurança Total 🛡️</h3>
-                <p>Garanta que apenas o destinatário correto possa ler sua mensagem.</p>
-            </div>
-            <div class="feature-box col-md-4">
-                <img src="https://via.placeholder.com/80?text=📧" alt="Emoji de Mensagem">
-                <h3>Fácil de Usar 📧</h3>
-                <p>Envie mensagens seguras de forma simples e intuitiva.</p>
-            </div>
-        </div>
+        </form>
 
+        <hr>
 
+        <?php if (isset($privKey)) {  ?>
+            <h2>*Salve as chaves para usar depois</h2>
+            <div class="content-section">
+                <?php echo base64_encode($privKey); ?>
+            </div>
+            <div class="content-section">
+                <?php echo base64_encode($pubKey); ?>
+            </div>
+            <?php if (isset($encrypted)) {  ?>
+                <div class="content-section">
+                    <?php echo base64_encode($encrypted); ?>
+                </div>
+            <?php } ?>
+        <?php } ?>
 
-        <!-- Code Section -->
-        <div class="row code-section">
-            <div class="col-md-6">
-                <h3>Exemplo de Código HTML</h3>
-                <code>
-                    &lt;div&gt;
-                    &lt;h1&gt;SafeMessage&lt;/h1&gt;
-                    &lt;p&gt;Mensagem criptografada segura&lt;/p&gt;
-                    &lt;/div&gt;
-                </code>
+        <hr>
+
+        <!-- Formulário para Descriptografar -->
+        <form method="post">
+            <textarea name="message" placeholder="Digite a mensagem criptografada"></textarea>
+            <textarea type="key" name="key" placeholder="Digite a chave de criptografia"></textarea>
+            <div>
+                <button type="submit">Decrypt</button>
+
             </div>
-            <div class="col-md-6">
-                <h3>Outro Exemplo</h3>
-                <code>
-                    &lt;button&gt;Clique Aqui&lt;/button&gt;
-                    &lt;p&gt;Proteja suas mensagens&lt;/p&gt;
-                </code>
+        </form>
+
+        <?php if (isset($decrypted)) {  ?>
+            <div class="content-section">
+                <?php echo $decrypted; ?>
             </div>
-        </div>
+        <?php } ?>
+
     </div>
 
-    <!-- Footer Section -->
-    <div class="footer">
-        <p>© 2024 SafeMessage - Sua comunicação segura e divertida 💬</p>
-    </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
