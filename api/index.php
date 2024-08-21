@@ -1,6 +1,8 @@
 <?php
-if (isset($_POST['message'])) {
-    $message = $_POST['message'];
+$error = null;
+
+if (!empty($_POST['toEncrypt'])) {
+    $message = $_POST['toEncrypt'];
 
     $res = openssl_pkey_new(array(
         "digest_alg" => "sha512",
@@ -12,14 +14,28 @@ if (isset($_POST['message'])) {
     $pubKey = openssl_pkey_get_details($res);
     $pubKey = $pubKey["key"];
 
-    openssl_public_encrypt($message, $encrypted, $pubKey);
+    if (!openssl_public_encrypt($message, $encrypted, $pubKey)) {
+        $error = 'Failure during encryption of your message!';
+    }
 }
 
-if (isset($_POST['message']) && isset($_POST['key'])) {
+if (!empty($_POST['message']) && !empty($_POST['key'])) {
     $key = base64_decode($_POST['key']);
     $message = base64_decode($_POST['message']);
 
-    openssl_private_decrypt($message, $decrypted, $key);
+    if (!openssl_pkey_get_private($key)) {
+        $error = 'Your key is invalid!';
+    } else {
+        openssl_private_decrypt($message, $decrypted, $key);
+
+        if (!$decrypted) {
+            $error = 'Failure during decryption of your message!';
+        }
+    }
+}
+
+if (openssl_error_string()) {
+    $error = openssl_error_string();
 }
 
 ?>
@@ -30,7 +46,7 @@ if (isset($_POST['message']) && isset($_POST['key'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafeMessage - Mensagens Criptografadas</title>
+    <title>THE ENCRYPTOR</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts -->
@@ -57,6 +73,7 @@ if (isset($_POST['message']) && isset($_POST['key'])) {
             border-radius: 5px;
             margin-bottom: 20px;
             box-shadow: 0 0 2px #00ff00;
+            margin-top: 3rem;
         }
 
         .hero h1 {
@@ -80,44 +97,46 @@ if (isset($_POST['message']) && isset($_POST['key'])) {
             margin-bottom: 20px;
             box-shadow: 0 0 2px #00ff00;
         }
+
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00, 0 0 50px #00ff00, 0 0 60px #00ff00, 0 0 70px #00ff00;
+            }
+
+            50% {
+                text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00, 0 0 50px #00ff00, 0 0 60px #00ff00, 0 0 80px #00ff00, 0 0 100px #00ff00;
+            }
+
+            100% {
+                text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00, 0 0 50px #00ff00, 0 0 60px #00ff00, 0 0 70px #00ff00;
+            }
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #fff;
+            text-align: center;
+            animation: glow 1.5s infinite alternate;
+        }
+
+        #charCount {
+            font-size: 0.9em;
+            margin-top: 5px;
+            text-align: right;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <div class="hero">
-            <h1>Encryptor</h1>
+            <h1>THE ENCRYPTOR</h1>
         </div>
 
-        <div class="content-section">
-            <ol>
-                <li>
-                    Gerar suas chaves
-                </li>
-                <li>
-                    Salvar suas chaves
-                </li>
-                <li>
-                    Escrever sua mensagem
-                </li>
-                <li>
-                    Encryptar sua mensagem
-                </li>
-                <li>
-                    Compartilhar sua mensagem
-                </li>
-                <li>
-                    Encryptar
-                </li>
-                <li>
-                    Decryptar
-                </li>
-            </ol>
-        </div>
-
-        <!-- Formulário para Criptografar -->
         <form method="post">
-            <textarea name="message" placeholder="Digite sua mensagem para criptografar"></textarea>
+            <label for="toEncrypt">What to encrypt?</label>
+            <textarea maxlength="50" id="toEncrypt" name="toEncrypt" rows="2" style="width: 100%;" required></textarea>
+            <h3 id="charCount">50 characters remaining</h3> <!-- Character counter -->
             <div>
                 <button type="submit">Encrypt</button>
             </div>
@@ -125,40 +144,119 @@ if (isset($_POST['message']) && isset($_POST['key'])) {
 
         <hr>
 
-        <?php if (isset($privKey)) {  ?>
-            <h2>*Salve as chaves para usar depois</h2>
-            <div class="content-section">
-                <?php echo base64_encode($privKey); ?>
+        <div class="row" id="download">
+
+            <div class="col-6">
+                <?php if (!empty($privKey)) {  ?>
+
+                    <div>
+                        <label for="decryptkey">Key to decrypt</label>
+                        <textarea id="decryptkey" disabled="true" rows="10" style="width: 100%;"><?php echo base64_encode($privKey); ?></textarea>
+                    </div>
+
+
+                <?php } ?>
             </div>
-            <div class="content-section">
-                <?php echo base64_encode($pubKey); ?>
+
+            <div class="col-6">
+
+                <?php if (!empty($encrypted)) {  ?>
+                    <div>
+                        <label for="result">Result</label>
+                        <textarea id="result" disabled="true" rows="10" style="width: 100%;"><?php echo base64_encode($encrypted); ?></textarea>
+                    </div>
+                <?php } ?>
             </div>
-            <?php if (isset($encrypted)) {  ?>
-                <div class="content-section">
-                    <?php echo base64_encode($encrypted); ?>
-                </div>
-            <?php } ?>
-        <?php } ?>
+
+        </div>
+
+        <div class="row <?php if (empty($encrypted)) {  ?> d-none <?php } ?>">
+
+            <div class="col-12">
+                <button id="download-button" type="submit">Save for later</button>
+            </div>
+
+        </div>
 
         <hr>
 
-        <!-- Formulário para Descriptografar -->
         <form method="post">
-            <textarea name="message" placeholder="Digite a mensagem criptografada"></textarea>
-            <textarea type="key" name="key" placeholder="Digite a chave de criptografia"></textarea>
+            <div class="row">
+
+                <div class="col-6">
+                    <label for="key">Decryption key</label>
+                    <textarea id="key" type="key" name="key" rows="10" style="width: 100%;" required></textarea>
+                </div>
+                <div class="col-6">
+                    <label for="message">Encrypted message</label>
+                    <textarea id="message" name="message" rows="10" style="width: 100%;" required></textarea>
+                </div>
+            </div>
             <div>
                 <button type="submit">Decrypt</button>
-
             </div>
         </form>
 
-        <?php if (isset($decrypted)) {  ?>
+        <?php if (!empty($error)) {  ?>
+
+            <hr>
+
+            <h3>Error</h3>
+
+            <div class="content-section">
+                <?php echo $error; ?>
+            </div>
+        <?php } ?>
+
+        <?php if (!empty($decrypted)) {  ?>
+
+            <hr>
+
+            <h3>Result</h3>
+
             <div class="content-section">
                 <?php echo $decrypted; ?>
             </div>
         <?php } ?>
 
     </div>
+
+
+    <script>
+        document.getElementById('download-button').addEventListener('click', function() {
+            // Get the content of the text areas
+            var decryptKeyContent = document.getElementById('decryptkey') ? document.getElementById('decryptkey').value : '';
+            var resultContent = document.getElementById('result') ? document.getElementById('result').value : '';
+
+            // Combine the content into a single string
+            var textToSave = 'Key to decrypt:\n' + decryptKeyContent + '\n\nResult:\n' + resultContent;
+
+            // Create a blob with the text content
+            var blob = new Blob([textToSave], {
+                type: 'text/plain'
+            });
+
+            // Create a link element
+            var link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'decrypted_data.txt'; // Name of the file to be downloaded
+
+            // Programmatically click the link to trigger the download
+            link.click();
+
+            // Cleanup
+            URL.revokeObjectURL(link.href);
+        });
+
+        document.getElementById('toEncrypt').addEventListener('input', function() {
+            var maxLength = this.maxLength;
+            var currentLength = this.value.length;
+            var remainingCharacters = maxLength - currentLength;
+
+            var charCountElement = document.getElementById('charCount');
+            charCountElement.textContent = remainingCharacters + ' characters remaining';
+        });
+    </script>
 
 </body>
 
