@@ -193,7 +193,7 @@ if (openssl_error_string()) {
                 </div>
             </div>
             <div>
-                <button type="submit">Decrypt</button>
+                <button class="mb-5"="submit">Decrypt</button>
             </div>
         </form>
 
