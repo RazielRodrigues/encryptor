@@ -8,14 +8,6 @@
         {
             "src": "/(.*)",
             "dest": "/api/index.php"
-        },
-        {
-            "src": "/user(.*)",
-            "dest": "/api/user.php"
-        },
-        {
-            "src": "/controller(.*)",
-            "dest": "/api/controller.php"
         }
     ]
 }

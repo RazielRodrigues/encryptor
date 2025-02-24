@@ -1,130 +1,43 @@
-<?php
-$error = null;
-
-if (!empty($_POST['toEncrypt'])) {
-    $message = $_POST['toEncrypt'];
-
-    $res = openssl_pkey_new(array(
-        "digest_alg" => "sha512",
-        "private_key_bits" => 512,
-        "private_key_type" => OPENSSL_KEYTYPE_RSA,
-    ));
-
-    openssl_pkey_export($res, $privKey);
-    $pubKey = openssl_pkey_get_details($res);
-    $pubKey = $pubKey["key"];
-
-    if (!openssl_public_encrypt($message, $encrypted, $pubKey)) {
-        $error = 'Failure during encryption of your message!';
-    }
-}
-
-if (!empty($_POST['message']) && !empty($_POST['key'])) {
-    $key = base64_decode($_POST['key']);
-    $message = base64_decode($_POST['message']);
-
-    if (!openssl_pkey_get_private($key)) {
-        $error = 'Your key is invalid!';
-    } else {
-        openssl_private_decrypt($message, $decrypted, $key);
-
-        if (!$decrypted) {
-            $error = 'Failure during decryption of your message!';
-        }
-    }
-}
-
-if (openssl_error_string()) {
-    $error = openssl_error_string();
-}
-
-?>
+<?php require_once './src/Controller.php'; ?>
 
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="EN">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE ENCRYPTOR</title>
-    <!-- Bootstrap CSS -->
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO Meta Tags -->
+    <meta name="title" content="Encryptor | Raziel Rodrigues" />
+    <meta name="description" content="Welcome to Raziel Rodrigues' website. Explore web development projects, insights, and technical expertise." />
+    <meta name="keywords" content="Raziel Rodrigues, web development, software engineer, JavaScript, PHP, Symfony, React, Go, programming" />
+    <meta name="author" content="Raziel Rodrigues" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph Meta Tags (For social media sharing) -->
+    <meta property="og:title" content="Encryptor | Raziel Rodrigues" />
+    <meta property="og:description" content="Explore Raziel Rodrigues' web development projects and technical expertise." />
+    <meta property="og:image" content="https://encryptor.razielrodrigues.dev/assets/raziel-pRRQJZz1.jpeg" />
+    <meta property="og:url" content="https://encryptor.razielrodrigues.dev" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Website | Raziel Rodrigues" />
+    <meta name="twitter:description" content="Explore Raziel Rodrigues' web development projects and technical expertise." />
+    <meta name="twitter:image" content="https://encryptor.razielrodrigues.dev/assets/raziel-pRRQJZz1.jpeg" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+
+    <title>Encryptor | Raziel Rodrigues</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background-color: #000000;
-            /* Fundo preto */
-            color: #00ff00;
-            /* Verde estilo Matrix */
-            font-family: 'Consolas', monospace;
-            /* Fonte estilo digital */
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background-size: cover;
-        }
-
-        .hero {
-            background-color: rgba(0, 0, 0, 0.8);
-            /* Fundo preto com transparência */
-            padding: 40px;
-            text-align: center;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 2px #00ff00;
-            margin-top: 3rem;
-        }
-
-        .hero h1 {
-            font-size: 3em;
-            color: #00ff00;
-            text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
-        }
-
-        .hero p,
-        button {
-            font-size: 1.2em;
-            color: #00ff00;
-            background-color: transparent;
-        }
-
-        .content-section {
-            background-color: rgba(0, 0, 0, 0.8);
-            /* Fundo preto com transparência */
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 2px #00ff00;
-        }
-
-        @keyframes glow {
-            0% {
-                text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00, 0 0 50px #00ff00, 0 0 60px #00ff00, 0 0 70px #00ff00;
-            }
-
-            50% {
-                text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00, 0 0 50px #00ff00, 0 0 60px #00ff00, 0 0 80px #00ff00, 0 0 100px #00ff00;
-            }
-
-            100% {
-                text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00, 0 0 50px #00ff00, 0 0 60px #00ff00, 0 0 70px #00ff00;
-            }
-        }
-
-        h1 {
-            font-size: 3em;
-            color: #fff;
-            text-align: center;
-            animation: glow 1.5s infinite alternate;
-        }
-
-        #charCount {
-            font-size: 0.9em;
-            margin-top: 5px;
-            text-align: right;
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&display=swap" rel="stylesheet">
+    <link href="./public/index.css" rel="stylesheet">
 </head>
 
 <body>
