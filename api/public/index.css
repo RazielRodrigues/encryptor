@@ -1,6 +1,8 @@
  body {
-    background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
-    font-family: 'Charm', 'Serif';
-    margin: auto;
-    display: grid;
-}
+     background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+     font-family: 'Charm', 'Serif';
+ }
+
+ .card {
+     border: none;
+ }

@@ -1,5 +1,7 @@
 <?php
 $error = null;
+$success = null;
+$page = $_GET['page'] ?? null;
 
 if (!empty($_POST['toEncrypt'])) {
     $message = $_POST['toEncrypt'];
