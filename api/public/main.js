@@ -1,11 +1,11 @@
 if (document.getElementById('download-button') !== null) {
     document.getElementById('download-button').addEventListener('click', function () {
         // Get the content of the text areas
-        var decryptKeyContent = document.getElementById('decryptkey') ? document.getElementById('decryptkey').value : '';
-        var resultContent = document.getElementById('result') ? document.getElementById('result').value : '';
+        var decryptKeyContent = document.getElementById('decryptkey') ? document.getElementById('decryptkey').textContent : '';
+        var resultContent = document.getElementById('result') ? document.getElementById('result').textContent : '';
 
         // Combine the content into a single string
-        var textToSave = 'Key to decrypt:\n' + decryptKeyContent + '\n\nResult:\n' + resultContent;
+        var textToSave = 'Private key: ' + decryptKeyContent.trim() + '\n\nEncrypted Message: \n' + resultContent.trim();
 
         // Create a blob with the text content
         var blob = new Blob([textToSave], {

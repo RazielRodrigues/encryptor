@@ -50,11 +50,6 @@
                             <?php echo htmlspecialchars($decrypted); ?>
                         <?php } ?>
                     </p>
-                    <?php if (!empty($decrypted)) { ?>
-                        <button id="download-button" class="btn btn-outline-secondary mt-2 w-100" style="font-family: 'Quintessential', cursive;">
-                            <i class="fas fa-save"></i> Save for Later
-                        </button>
-                    <?php } ?>
                 </div>
             </div>
         </div>
