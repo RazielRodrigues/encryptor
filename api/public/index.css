@@ -1,8 +1,48 @@
  body {
      background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
-     font-family: 'Charm', 'Serif';
+     font-family: 'Quintessential', 'Serif';
  }
 
  .card {
      border: none;
  }
+
+ /* Use your existing CSS plus the additions below. */
+
+/* Body with a subtle magical swirl or gradient. 
+   Replace the URL with any pattern image or keep it a gentle gradient. */
+body.magical-bg {
+    /* Example: subtle gradient plus white swirl image */
+    background: linear-gradient(160deg, rgba(255,255,255,1) 0%, rgba(240,240,255,1) 100%);
+    /* If you want a pattern image, uncomment the line below and add your image:
+       background: url("path-to-magical-pattern.png") no-repeat center center fixed; 
+       background-size: cover; 
+    */
+    font-family: 'Quintessential', cursive;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar styling */
+.navbar {
+    border-bottom: 1px solid #ccc;
+}
+
+/* Card styling */
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+/* Headings and text style (optional override) */
+h1, h4, h5 {
+    color: #2b2b2b;
+}
+
+/* Buttons hover effect */
+.btn-outline-secondary:hover {
+    background-color: #eee;
+    color: #333;
+    border-color: #ccc;
+}
