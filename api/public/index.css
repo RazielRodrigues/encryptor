@@ -6,21 +6,32 @@
    Replace the URL with any pattern image or keep it a gentle gradient. */
 * {
     /* Example: subtle gradient plus white swirl image */
-    background: linear-gradient(160deg, rgba(255,255,255,1) 0%, rgba(240,240,255,1) 100%);
+    background: transparent;
     /* If you want a pattern image, uncomment the line below and add your image:
        background: url("path-to-magical-pattern.png") no-repeat center center fixed; 
        background-size: cover; 
     */
     font-family: 'Quintessential', cursive;
-    color: #333 !important;
+    color: #2b2b2b;
     margin: 0;
     padding: 0;
 }
 
+body {
+    background: rgb(252,255,232);
+    background: -moz-linear-gradient(180deg, rgba(252,255,232,1) 100%, rgba(140,140,255,1) 100%);
+    background: -webkit-linear-gradient(180deg, rgba(252,255,232,1) 100%, rgba(140,140,255,1) 100%);
+    background: linear-gradient(180deg, rgba(252,255,232,1) 100%, rgba(140,140,255,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fcffe8",endColorstr="#8c8cff",GradientType=1);
+    height: 100%;
+}
 
-/* Headings and text style (optional override) */
-h1, h4, h5 {
-    color: #2b2b2b;
+nav {
+    background: rgb(252,255,232);
+    background: -moz-linear-gradient(180deg, rgba(252,255,232,1) 100%, rgba(140,140,255,1) 100%);
+    background: -webkit-linear-gradient(180deg, rgba(252,255,232,1) 100%, rgba(140,140,255,1) 100%);
+    background: linear-gradient(180deg, rgba(252,255,232,1) 100%, rgba(140,140,255,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fcffe8",endColorstr="#8c8cff",GradientType=1);
 }
 
 
