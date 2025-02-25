@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -44,65 +45,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Quintessential&display=swap" rel="stylesheet">
 </head>
 
-<body class="magical-bg">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-light">
-        <div class="container-fluid">
-            <a class="navbar-brand fs-3" href="/" style="font-family: 'Quintessential', cursive;">
-                <span class="text-dark">Encryptor</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-                    data-bs-target="#navbarText" aria-controls="navbarText" 
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarText">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/?page=encrypt">Encrypt</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/?page=decrypt">Decrypt</a>
-                    </li>
-                </ul>
-                <span class="navbar-text">
-                    <a href="https://www.razielrodrigues.dev/" target="_blank" rel="noopener noreferrer" class="text-decoration-none text-dark">
-                        Made by raziel rodrigues
-                    </a>
-                </span>
-            </div>
-        </div>
-    </nav>
+<body>
+
+    <?php include './navbar.php'; ?>
 
     <main class="container mt-5 pb-5">
-        <?php if (!empty($error)) { ?>
-            <div class="alert alert-warning" role="alert">
-                <?php echo $error; ?>
+        <?php if (!empty($msg)) { ?>
+            <div class="alert alert-primary" role="alert">
+                <?php echo $msg; ?>
             </div>
         <?php } ?>
-
-        <?php if (!empty($success)) { ?>
-            <div class="alert alert-success" role="alert">
-                <?php echo $success; ?>
-            </div>
-        <?php } ?>
-
-        <?php if ($page === null) { ?>
-            <?php include './home.php'; ?>
-        <?php } ?>
-
-        <?php if ($page === 'encrypt') { ?>
-            <?php include './encrypt.php'; ?>
-        <?php } ?>
-
-        <?php if ($page === 'decrypt') { ?>
-            <?php include './decrypt.php'; ?>
-        <?php } ?>
+        <?php
+        match ($page) {
+            null => include './home.php',
+            'encrypt' => include './encrypt.php',
+            'decrypt' => include './decrypt.php',
+            default => include './home.php'
+        }
+        ?>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./public/main.js"></script>
 </body>
+
 </html>

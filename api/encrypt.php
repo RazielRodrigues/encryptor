@@ -62,17 +62,15 @@
             </div>
         </div>
 
-        <div class="row mt-5">
-        <?php if (!empty($encrypted)) { ?>
-
-            <button
-                id="download-button"
-                class="btn btn-outline-secondary mt-2"
-                style="font-family: 'Quintessential', cursive;">
-                <i class="fas fa-download"></i> Save for Later
-            </button>
+        <div class="row  ">
+            <?php if (!empty($encrypted)) { ?>
+                <button
+                    id="download-button"
+                    class="btn btn-outline-secondary mt-2"
+                    style="font-family: 'Quintessential', cursive;">
+                    <i class="fas fa-download"></i> Save for Later
+                </button>
             <?php } ?>
-
         </div>
 
     </div>

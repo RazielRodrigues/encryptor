@@ -50,17 +50,16 @@
                 </p>
             </div>
             <div class="card-footer">
-            <a href="/?page=decrypt" class="btn btn-outline-secondary w-100 my-3 py-2"
-            style="font-family: 'Quintessential', cursive;">
-            Start Decrypting
-        </a>
+                <a href="/?page=decrypt" class="btn btn-outline-secondary w-100 my-3 py-2"
+                    style="font-family: 'Quintessential', cursive;">
+                    Start Decrypting
+                </a>
             </div>
         </div>
     </div>
 </div>
- 
 
-<div class="mt-5 text-center">
+<div class=" text-center">
     <h5 style="font-family: 'Quintessential', cursive;">
         May your data remain ever safe in this enchanted domain!
     </h5>
