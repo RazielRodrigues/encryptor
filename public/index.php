@@ -47,7 +47,7 @@
 
 <body>
 
-    <?php include './navbar.php'; ?>
+    <?php include_once __DIR__ . '/navbar.php'; ?>
 
     <main class="container mt-5 pb-5">
         <?php if (!empty($msg)) { ?>

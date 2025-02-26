@@ -18,6 +18,10 @@
       "dest": "/public/assets/index.css"
     },
     {
+      "src": "/main.js",
+      "dest": "/public/assets/main.js"
+    },
+    {
       "src": "/assets/(.*).png",
       "dest": "/public/assets/$1"
     },
