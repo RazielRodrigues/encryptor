@@ -1,4 +1,4 @@
-<?php require_once './Controller.php'; ?>
+<?php require_once __DIR__ . '/src/Controller.php'; ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -57,10 +57,10 @@
         <?php } ?>
         <?php
         match ($page) {
-            null => include './home.php',
-            'encrypt' => include './encrypt.php',
-            'decrypt' => include './decrypt.php',
-            default => include './home.php'
+            null => include_once __DIR__ . '/home.php',
+            'encrypt' => include_once __DIR__ . '/encrypt.php',
+            'decrypt' => include_once __DIR__ . '/decrypt.php',
+            default => include_once __DIR__ . '/home.php'
         }
         ?>
     </main>
