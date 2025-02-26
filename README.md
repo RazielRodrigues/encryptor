@@ -2,6 +2,8 @@
 
 Encryptor is a web-based tool that allows users to encrypt and decrypt text securely.
 
+![image](https://github.com/user-attachments/assets/566aaf7a-5733-431c-89af-0221f6a3b630)
+
 ## Features
 - Encrypt and decrypt text using secure algorithms.
 - User-friendly web interface.
