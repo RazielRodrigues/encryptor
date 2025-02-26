@@ -20,6 +20,12 @@ Run the project:
 php -S 127.0.0.1:8000 ./index.php
 ```
 
+or
+
+```sh
+docker-compose up -d
+```
+
 ## Contributing
 See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
