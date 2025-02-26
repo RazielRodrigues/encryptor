@@ -21,8 +21,8 @@
                 </li>
             </ul>
             <span class="navbar-text">
-                <a href="https://www.razielrodrigues.dev/" target="_blank" rel="noopener noreferrer" class="text-decoration-none text-dark">
-                    Made by raziel rodrigues
+                <a href="https://github.com/RazielRodrigues/encryptor" target="_blank" rel="noopener noreferrer" class="text-decoration-none text-dark">
+                    Made by ecnryptor project
                 </a>
             </span>
         </div>

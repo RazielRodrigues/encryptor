@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- SEO Meta Tags -->
-    <meta name="title" content="Encryptor | Raziel Rodrigues" />
+    <meta name="title" content="Encryptor | Open source web app for encryption" />
     <meta name="description" content="Welcome to Raziel Rodrigues' website. Explore web development projects, insights, and technical expertise." />
     <meta name="keywords" content="Raziel Rodrigues, web development, software engineer, JavaScript, PHP, Symfony, React, Go, programming" />
     <meta name="author" content="Raziel Rodrigues" />
@@ -30,7 +30,7 @@
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="./assets/favicon.ico" />
 
-    <title>Encryptor | Raziel Rodrigues</title>
+    <title>Encryptor | Open source web app for encryption</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
