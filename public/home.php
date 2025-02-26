@@ -14,8 +14,8 @@
         <div class="card border-0 shadow-sm">
             <div class="card-body">
                 <picture>
-                    <source srcset="./public/mage3.png" type="image/svg+xml">
-                    <img width="290" height="290" src="./public/mage3.png"
+                    <source srcset="https://raw.githubusercontent.com/RazielRodrigues/encryptor/refs/heads/main/public/assets/mage3.png" type="image/svg+xml">
+                    <img width="290" height="290" src="https://raw.githubusercontent.com/RazielRodrigues/encryptor/refs/heads/main/public/assets/mage3.png"
                         class="img-fluid rounded mx-auto d-block" alt="Wizard reading a spellbook">
                 </picture>
             </div>
