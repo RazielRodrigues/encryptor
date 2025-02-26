@@ -1,4 +1,4 @@
-<?php require_once './src/Controller.php'; ?>
+<?php require_once './Controller.php'; ?>
 
 <!DOCTYPE html>
 <html lang="en">
